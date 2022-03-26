@@ -1,9 +1,11 @@
 import React, { useCallback } from 'react';
 import { Title, Text, Anchor, AppShell, Navbar, Header } from '@mantine/core';
 import { useDropzone } from 'react-dropzone';
+import convert from 'xml-js';
 import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
 import { Brand } from '../components/Brand/Brand';
 import { MainLinks } from '../components/MainLinks/MainLinks';
+import { findEl, findElText } from '../components/Utils/Utils';
 //import { Saves } from '../components/Saves/Saves';
 
 export default function HomePage() {
@@ -13,10 +15,10 @@ export default function HomePage() {
     </Header>
   );
 
+  const;
+
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    acceptedFiles.forEach((file: File) => {
-      console.log(file);
-    });
+    acceptedFiles.map();
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
