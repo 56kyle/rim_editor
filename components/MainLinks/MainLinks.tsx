@@ -17,7 +17,6 @@ function MainLink({ icon, color, label }: MainLinkProps) {
         padding: theme.spacing.xs,
         borderRadius: theme.radius.sm,
         color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
-
         '&:hover': {
           backgroundColor:
             theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
@@ -39,10 +38,20 @@ const data = [
   { icon: <GitPullRequest size={16} />, color: 'blue', label: 'Pull Requests' },
   { icon: <AlertCircle size={16} />, color: 'teal', label: 'Open Issues' },
   { icon: <Messages size={16} />, color: 'violet', label: 'Discussions' },
-  { icon: <FileInfo size={16} />, color: 'grape', label: 'Databases' },
+  {},
 ];
 
-export function MainLinks() {
-  const links = data.map((link) => <MainLink {...link} key={link.label} />);
+interface MainLinksProps {
+  saves: Array<convert.Element | undefined>;
+  children?: React.ReactNode;
+}
+
+export function MainLinks({ saves, children }: MainLinksProps) {
+  const links = saves.map((link) => {
+    let mainLinkProps = { icon: <FileInfo size={16} />, color: 'grape', label: link.name }
+    return (
+      <MainLink {...link} key={link.label} />
+    );
+  });
   return <div>{links}</div>;
 }

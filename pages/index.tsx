@@ -1,12 +1,10 @@
-import React, { useCallback } from 'react';
-import { Title, Text, Anchor, AppShell, Navbar, Header } from '@mantine/core';
+import React, { useCallback, useState, useContext, useEffect } from 'react';
+import { Title, Text, Anchor, AppShell, Header } from '@mantine/core';
 import { useDropzone } from 'react-dropzone';
 import convert from 'xml-js';
 import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
-import { Brand } from '../components/Brand/Brand';
-import { MainLinks } from '../components/MainLinks/MainLinks';
-import { findEl, findElText } from '../components/Utils/Utils';
-//import { Saves } from '../components/Saves/Saves';
+import Nav from '../components/Nav/Nav';
+//import { Save } from '../components/Save/Save';
 
 export default function HomePage() {
   const header = (
@@ -15,10 +13,24 @@ export default function HomePage() {
     </Header>
   );
 
-  const;
+  const [saveElements, setSaveElements] = useState<Array<convert.Element | undefined>>([]);
+
+  const addSaveElement = (element: convert.Element) => {
+    setSaveElements((elements) => [...elements, element]);
+  };
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    acceptedFiles.map();
+    acceptedFiles.forEach((file: File) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const asJS: convert.Element = convert.xml2js(
+          reader.result as string,
+          { compact: false, alwaysChildren: true }
+        ) as convert.Element;
+        addSaveElement(asJS);
+      };
+      reader.readAsText(file);
+    });
   }, []);
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -31,16 +43,7 @@ export default function HomePage() {
       <AppShell
         {...getRootProps()}
         padding="md"
-        navbar={
-          <Navbar height={600} p="xs" width={{ base: 300 }}>
-            <Navbar.Section mt="xs">
-              <Brand />
-            </Navbar.Section>
-            <Navbar.Section grow mt="md">
-              <MainLinks />
-            </Navbar.Section>
-          </Navbar>
-        }
+        navbar={<Nav saves={saveElements} />}
         header={header}
         styles={(theme) => ({
           main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
