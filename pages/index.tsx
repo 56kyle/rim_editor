@@ -1,10 +1,11 @@
-import React, { useCallback, useState, useContext, useEffect } from 'react';
+import React, { useCallback, useState, useContext, useEffect, useMemo } from 'react';
 import { Title, Text, Anchor, AppShell, Header } from '@mantine/core';
 import { useDropzone } from 'react-dropzone';
 import convert from 'xml-js';
 import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
 import Nav from '../components/Nav/Nav';
-//import { Save } from '../components/Save/Save';
+import SaveComponent from '../components/Save/Save';
+import { useUuid } from '@mantine/hooks';
 
 export default function HomePage() {
   const header = (
@@ -38,6 +39,18 @@ export default function HomePage() {
     noClick: true,
   });
 
+  const saveComponents = useMemo(() => {
+    return (
+      saveElements.map((el) => {
+        if (el) {
+          return (
+            <SaveComponent key={useUuid()} initialElement={el}></SaveComponent>
+          );
+        }
+      })
+    );
+  }, [saveElements])
+
   return (
     <>
       <AppShell
@@ -50,20 +63,7 @@ export default function HomePage() {
       })}
       >
         <input {...getInputProps()} />
-        <Title sx={{ fontSize: 100, fontWeight: 900, letterSpacing: -2 }} align="center" mt={100}>
-          Welcome to{' '}
-          <Text inherit variant="gradient" component="span">
-            Mantine
-          </Text>
-        </Title>
-        <Text color="dimmed" align="center" size="lg" sx={{ maxWidth: 580 }} mx="auto" mt="xl">
-          This starter Next.js projects includes a minimal setup for server side rendering, if you
-          want to learn more on Mantine + Next.js integration follow{' '}
-          <Anchor href="https://mantine.dev/theming/next/" size="lg">
-            this guide
-          </Anchor>
-          . To get started edit index.tsx file.
-        </Text>
+        {saveComponents}
         <ColorSchemeToggle />
       </AppShell>
     </>
