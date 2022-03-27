@@ -1,4 +1,6 @@
 import React from 'react';
+import convert from 'xml-js';
+
 import { GitPullRequest, AlertCircle, Messages, FileInfo } from 'tabler-icons-react';
 import { ThemeIcon, UnstyledButton, Group, Text } from '@mantine/core';
 
@@ -38,19 +40,12 @@ const data = [
   { icon: <GitPullRequest size={16} />, color: 'blue', label: 'Pull Requests' },
   { icon: <AlertCircle size={16} />, color: 'teal', label: 'Open Issues' },
   { icon: <Messages size={16} />, color: 'violet', label: 'Discussions' },
-  {},
 ];
 
-interface MainLinksProps {
-  saves: Array<convert.Element | undefined>;
-  children?: React.ReactNode;
-}
-
-export function MainLinks({ saves, children }: MainLinksProps) {
-  const links = saves.map((link) => {
-    let mainLinkProps = { icon: <FileInfo size={16} />, color: 'grape', label: link.name }
+export function MainLinks() {
+  const links = data.map((link) => {
     return (
-      <MainLink {...link} key={link.label} />
+      <MainLink key={link.label} {...link} />
     );
   });
   return <div>{links}</div>;

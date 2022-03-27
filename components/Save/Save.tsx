@@ -1,24 +1,24 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { stringify } from 'querystring';
+import React, { useState, useEffect, useCallback } from 'react';
 import convert from 'xml-js';
+import { useXMLElement, XMLElement } from '../Element/Element';
+
 
 interface SaveProps {
-  id: string,
+  initialElement: convert.Element,
   children?: React.ReactNode,
 }
 
-const saveContext = React.createContext<SaveProps>({ id: '' });
-const SaveComponent: React.FC = () => {
-  useContext(SaveContext);
-  useEffect(
-    () => {
 
-    },
-    []
-  );
-
+const SaveComponent: React.FC<SaveProps> = ({ initialElement, children }) => {
+  const [element, setElement] = useState<XMLElement>(useXMLElement(initialElement));
+  console.log('element - ', element);
   return (
     <>
       {children}
     </>
   );
 };
+
+
+export default SaveComponent;
