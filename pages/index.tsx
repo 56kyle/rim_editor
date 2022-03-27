@@ -1,11 +1,11 @@
-import React, { useCallback, useState, useContext, useEffect, useMemo } from 'react';
-import { Title, Text, Anchor, AppShell, Header } from '@mantine/core';
+import React, { useCallback, useState, useMemo } from 'react';
+import { AppShell, Header } from '@mantine/core';
 import { useDropzone } from 'react-dropzone';
 import convert from 'xml-js';
+import { v4 as uuidv4} from 'uuid';
 import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
 import Nav from '../components/Nav/Nav';
 import SaveComponent from '../components/Save/Save';
-import { useUuid } from '@mantine/hooks';
 
 export default function HomePage() {
   const header = (
@@ -39,17 +39,17 @@ export default function HomePage() {
     noClick: true,
   });
 
-  const saveComponents = useMemo(() => {
-    return (
+  const saveComponents = useMemo(() => (
       saveElements.map((el) => {
+        const newUuid = uuidv4();
         if (el) {
           return (
-            <SaveComponent key={useUuid()} initialElement={el}></SaveComponent>
+            <SaveComponent key={newUuid} initialElement={el} />
           );
         }
+        return <></>;
       })
-    );
-  }, [saveElements])
+    ), [saveElements]);
 
   return (
     <>

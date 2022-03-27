@@ -43,10 +43,8 @@ const data = [
 ];
 
 export function MainLinks() {
-  const links = data.map((link) => {
-    return (
+  const links = data.map((link) => (
       <MainLink key={link.label} {...link} />
-    );
-  });
+    ));
   return <div>{links}</div>;
 }

@@ -1,8 +1,6 @@
-
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import convert from 'xml-js';
-import {v4 as uuidv4} from 'uuid';
-
+import { v4 as uuidv4} from 'uuid';
 
 interface XMLElement extends convert.Element {
     id: string,
@@ -11,17 +9,19 @@ interface XMLElement extends convert.Element {
 }
 
 function useXMLElement(parentElement: convert.Element, onChange?: (childElement: XMLElement) => void): XMLElement {
+    console.log('useXMLElement - ', parentElement);
     const [element, setElement] = useState<XMLElement>({} as XMLElement);
 
     useEffect(() => {
         if (onChange) {
             onChange(element);
         }
-    }, [element, onChange])
+    }, [element, onChange]);
 
     const handleChange = useCallback((childElement: XMLElement) => {
+        console.log('handleChange - ', childElement);
         setElement((currentElement: XMLElement) => {
-            let newChildElements: XMLElement[] = currentElement.elements.filter((el: XMLElement) => el.id !== childElement.id);
+            const newChildElements: XMLElement[] = currentElement.elements.filter((el: XMLElement) => el.id !== childElement.id);
 
             return ({
                 ...currentElement,
@@ -30,20 +30,20 @@ function useXMLElement(parentElement: convert.Element, onChange?: (childElement:
         });
     }, [setElement]);
 
-    let newElement: XMLElement = {
-        id: uuidv4(),
+    const newUuid = uuidv4();
+    const newElement: XMLElement = {
+        id: newUuid,
         elements: [] as XMLElement[],
         onChange: handleChange,
-        ...parentElement
+        ...parentElement,
     } as XMLElement;
 
     if (parentElement.elements) {
-        newElement.elements = parentElement.elements.map((el: convert.Element) => useXMLElement(el))
+        newElement.elements = parentElement.elements.map((el: convert.Element) => useXMLElement(el));
     }
 
-    return newElement
+    return newElement;
 }
-
 
 export { useXMLElement };
 export type { XMLElement };
