@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import convert from 'xml-js';
-import { v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 
 interface XMLElement extends convert.Element {
     id: string,
@@ -8,21 +8,23 @@ interface XMLElement extends convert.Element {
     onChange?: (childElement: XMLElement) => void,
 }
 
-function useXMLElement(parentElement: convert.Element, onChange?: (childElement: XMLElement) => void): XMLElement {
-    console.log('useXMLElement - ', parentElement);
+function useXMLElement(
+    parentElement: convert.Element,
+    onChange?: (childElement: XMLElement) => void
+    ): XMLElement {
     const [element, setElement] = useState<XMLElement>({} as XMLElement);
 
     useEffect(() => {
+        console.log('onChange', element);
         if (onChange) {
             onChange(element);
         }
     }, [element, onChange]);
 
     const handleChange = useCallback((childElement: XMLElement) => {
-        console.log('handleChange - ', childElement);
-        setElement((currentElement: XMLElement) => {
-            const newChildElements: XMLElement[] = currentElement.elements.filter((el: XMLElement) => el.id !== childElement.id);
-
+        setElement(currentElement => {
+            const newChildElements: XMLElement[] = currentElement.elements.filter(
+                (el: XMLElement) => el.id !== childElement.id);
             return ({
                 ...currentElement,
                 elements: [childElement, ...newChildElements],
@@ -39,10 +41,11 @@ function useXMLElement(parentElement: convert.Element, onChange?: (childElement:
     } as XMLElement;
 
     if (parentElement.elements) {
-        newElement.elements = parentElement.elements.map((el: convert.Element) => useXMLElement(el));
+        newElement.elements = parentElement.elements.map(
+            (el: convert.Element) => useXMLElement(el));
     }
 
-    return newElement;
+    return newElement, ;
 }
 
 export { useXMLElement };
