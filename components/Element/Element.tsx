@@ -12,14 +12,12 @@ function useXMLElement(
     parentElement: convert.Element,
     onChange?: (childElement: XMLElement) => void
     ): XMLElement {
-    const [element, setElement] = useState<XMLElement>({} as XMLElement);
-
-    useEffect(() => {
-        console.log('onChange', element);
-        if (onChange) {
-            onChange(element);
-        }
-    }, [element, onChange]);
+    const [element, setElement] = useState<XMLElement>({
+        id: uuidv4(),
+        elements: parentElement.elements?.map((el: convert.Element) => useXMLElement(el)) ?? [] as XMLElement[],
+        onChange: undefined,
+        ...parentElement,
+    } as XMLElement);
 
     const handleChange = useCallback((childElement: XMLElement) => {
         setElement(currentElement => {
@@ -32,20 +30,17 @@ function useXMLElement(
         });
     }, [setElement]);
 
-    const newUuid = uuidv4();
-    const newElement: XMLElement = {
-        id: newUuid,
-        elements: [] as XMLElement[],
-        onChange: handleChange,
-        ...parentElement,
-    } as XMLElement;
+    useEffect(() => {
+        console.log('onChange', element);
+        if (onChange) {
+            onChange(element);
+        }
+    }, [element, onChange]);
 
     if (parentElement.elements) {
-        newElement.elements = parentElement.elements.map(
-            (el: convert.Element) => useXMLElement(el));
     }
 
-    return newElement, ;
+    return newElement
 }
 
 export { useXMLElement };
