@@ -37,10 +37,8 @@ function useXMLElement(
         }
     }, [element, onChange]);
 
-    if (parentElement.elements) {
-    }
 
-    return newElement
+    return element;
 }
 
 export { useXMLElement };

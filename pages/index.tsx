@@ -2,7 +2,7 @@ import React, { useCallback, useState, useMemo } from 'react';
 import { AppShell, Header } from '@mantine/core';
 import { useDropzone } from 'react-dropzone';
 import convert from 'xml-js';
-import { v4 as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
 import Nav from '../components/Nav/Nav';
 import SaveComponent from '../components/Save/Save';
