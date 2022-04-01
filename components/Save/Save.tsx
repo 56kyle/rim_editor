@@ -1,17 +1,14 @@
-import { stringify } from 'querystring';
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import convert from 'xml-js';
-import { asXMLComponent, XMLElement } from '../XMLElement/XMLElement';
+import ElementComponent from '../Element/Element';
 
 interface SaveProps {
   initialElement: convert.Element,
   children?: React.ReactNode,
 }
 
-const SaveComponent: React.FC<SaveProps> = ({ initialElement, children }) => {
-  return <>
-    {asXMLComponent(initialElement)}
-  </>;
-};
+const SaveComponent: React.FC<SaveProps> = ({ initialElement, children }) => (
+  <ElementComponent {...initialElement}>{children}</ElementComponent>
+);
 
 export default SaveComponent;

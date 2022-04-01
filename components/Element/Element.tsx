@@ -1,45 +1,25 @@
-import { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import convert from 'xml-js';
 import { v4 as uuidv4 } from 'uuid';
 
-interface XMLElement extends convert.Element {
-    id: string,
-    elements: XMLElement[],
-    onChange?: (childElement: XMLElement) => void,
+import { Accordion, AccordionItem, Text } from '@mantine/core';
+
+interface ElementProps extends convert.Element {
+    id: string;
 }
 
-function useXMLElement(
-    parentElement: convert.Element,
-    onChange?: (childElement: XMLElement) => void
-    ): XMLElement {
-    const [element, setElement] = useState<XMLElement>({
-        id: uuidv4(),
-        elements: parentElement.elements?.map((el: convert.Element) => useXMLElement(el)) ?? [] as XMLElement[],
-        onChange: undefined,
-        ...parentElement,
-    } as XMLElement);
+const ElementComponent: React.FC<ElementProps> = (props) => (
+        <Accordion>
+            {props.text ? <Text>{props.text}</Text> : null}
+            {props.elements?.map((element: convert.Element) => {
+                const id = uuidv4();
+                return (
+                    <AccordionItem label={element.name}>
+                        <ElementComponent key={id} id={id} {...element} />
+                    </AccordionItem>
+                );
+            })}
+        </Accordion>
+    );
 
-    const handleChange = useCallback((childElement: XMLElement) => {
-        setElement(currentElement => {
-            const newChildElements: XMLElement[] = currentElement.elements.filter(
-                (el: XMLElement) => el.id !== childElement.id);
-            return ({
-                ...currentElement,
-                elements: [childElement, ...newChildElements],
-            });
-        });
-    }, [setElement]);
-
-    useEffect(() => {
-        console.log('onChange', element);
-        if (onChange) {
-            onChange(element);
-        }
-    }, [element, onChange]);
-
-
-    return element;
-}
-
-export { useXMLElement };
-export type { XMLElement };
+export default ElementComponent;
