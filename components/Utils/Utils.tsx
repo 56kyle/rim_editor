@@ -32,10 +32,10 @@ export function findElText(
   return '';
 }
 
-export const loadXMLToJS = useCallback((file: File) => {
+export const loadXMLToJS = (file: File) => {
   const reader = new FileReader();
   reader.onload = () => convert.xml2js(
     reader.result as string, { compact: false, alwaysChildren: true }
   );
   reader.readAsText(file);
-}, []);
+};

@@ -5,7 +5,7 @@ import convert from 'xml-js';
 import { v4 as uuidv4 } from 'uuid';
 import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
 import Nav from '../components/Nav/Nav';
-import ElementComponent from '../components/Element/Element';
+import SaveComponent from '../components/Save/Save';
 
 export default function HomePage() {
   const header = (
@@ -29,6 +29,7 @@ export default function HomePage() {
           alwaysChildren: true,
         }) as convert.Element;
         setSaveElement(xmlAsJS?.elements ? xmlAsJS.elements[0] : undefined);
+        console.dir(saveElement);
       };
       reader.readAsText(file);
     });
@@ -51,7 +52,7 @@ export default function HomePage() {
       })}
       >
         <input {...getInputProps()} />
-        <ElementComponent id={uuidv4()} {...saveElement} />
+        <SaveComponent {...saveElement} />
         <ColorSchemeToggle />
       </AppShell>
     </>
