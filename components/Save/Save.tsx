@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import convert from 'xml-js';
 import { v4 as uuidv4 } from 'uuid';
 import { Tabs } from '@mantine/core';
@@ -13,22 +13,19 @@ interface SaveProps extends convert.Element {
 const SaveComponent: React.FC<SaveProps> = (props) => {
   console.log('SaveComponent');
   const [name, setName] = useState(props.name);
+
   const [maps, setMaps] = useState<convert.Element[]>(
-    findEl(props, ['game', 'maps'])?.elements ?? [] as convert.Element[]
-  );
-  console.dir(maps);
+    findEl(props, ['game', 'maps'])?.elements as convert.Element[]);
 
   return (
-    <Tabs>
-      {maps.map((map) => {
-        const mapID: string = getMapID(map);
+    <div>
+      <p>Maps below</p>
+      {maps?.map((map) => {
         return (
-          <Tabs.Tab key={mapID}>
-            <MapComponent key={mapID} {...map} />
-          </Tabs.Tab>
+          <MapComponent key={getMapID(map)} {...map} />
         );
       })}
-    </Tabs>
+    </div>
   );
 };
 

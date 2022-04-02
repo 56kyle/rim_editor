@@ -15,25 +15,28 @@ export default function HomePage() {
   );
 
   const [saveElement, setSaveElement] = useState<convert.Element>();
-  useEffect(() => {
-    console.log('useEffect - saveElement');
-    console.dir(saveElement);
-  }, [saveElement]);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
-    acceptedFiles.forEach((file: File) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const xmlAsJS: convert.Element = convert.xml2js(reader.result as string, {
-          compact: false,
-          alwaysChildren: true,
-        }) as convert.Element;
-        setSaveElement(xmlAsJS?.elements ? xmlAsJS.elements[0] : undefined);
-        console.dir(saveElement);
-      };
-      reader.readAsText(file);
+  acceptedFiles.forEach((file: File) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const xmlAsJS: convert.Element = convert.xml2js(reader.result as string, {
+        compact: false,
+        alwaysChildren: true,
+      }) as convert.Element;
+      console.log('xmlAsJS');
+      console.dir(xmlAsJS);
+      setSaveElement(xmlAsJS?.elements ? xmlAsJS.elements[0] : undefined);
+    };
+    reader.readAsText(file);
     });
   }, [setSaveElement]);
+
+  useEffect(() => {
+    console.log('saveElement - useEffect');
+    console.dir(saveElement);
+  }, [saveElement])
+
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
@@ -52,7 +55,7 @@ export default function HomePage() {
       })}
       >
         <input {...getInputProps()} />
-        <SaveComponent {...saveElement} />
+        {<SaveComponent {...saveElement} />}
         <ColorSchemeToggle />
       </AppShell>
     </>
