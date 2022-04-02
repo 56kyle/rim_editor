@@ -6,7 +6,6 @@ import SaveComponent from '../components/Save/Save';
 
 import { sampleData } from '../data/SampleData';
 
-
 export default function HomePage() {
   const header = (
     <Header height={60} p="xs">

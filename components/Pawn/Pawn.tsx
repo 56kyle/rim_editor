@@ -1,6 +1,6 @@
-
 import React, { useState } from 'react';
 import convert from 'xml-js';
+import { v4 as uuidv4 } from 'uuid';
 
 import { Grid, Text } from '@mantine/core';
 
@@ -11,6 +11,7 @@ interface PawnProps extends convert.Element {
     children?: React.ReactNode,
 }
 
+const getPawnID = (pawn: PawnProps): string => findElText(findEl(pawn, 'uniqueID')) as string ?? uuidv4();
 
 const PawnComponent: React.FC<PawnProps> = (props) => {
     console.log('PawnComponent');
@@ -28,7 +29,7 @@ const PawnComponent: React.FC<PawnProps> = (props) => {
         </Grid>
 
     );
-}
-
+};
 
 export default PawnComponent;
+export { getPawnID };

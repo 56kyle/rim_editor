@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import convert from 'xml-js';
 import { v4 as uuidv4 } from 'uuid';
+import { Tabs } from '@mantine/core';
 import { findEl, findElText } from '../Utils/Utils';
 
-import MapComponent from '../Map/Map';
-import { Tabs } from '@mantine/core';
+import MapComponent, { getMapID } from '../Map/Map';
 
 interface SaveProps extends convert.Element {
   children?: React.ReactNode,
@@ -17,12 +17,14 @@ const SaveComponent: React.FC<SaveProps> = (props) => {
     findEl(props, ['game', 'maps'])?.elements ?? [] as convert.Element[]
   );
   console.dir(maps);
+
   return (
     <Tabs>
       {maps.map((map) => {
+        const mapID: string = getMapID(map);
         return (
-          <Tabs.Tab key={uuidv4()}>
-            <MapComponent key={uuidv4()} {...map} />
+          <Tabs.Tab key={mapID}>
+            <MapComponent key={mapID} {...map} />
           </Tabs.Tab>
         );
       })}
