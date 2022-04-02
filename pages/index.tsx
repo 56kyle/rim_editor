@@ -30,13 +30,14 @@ export default function HomePage() {
     };
     reader.readAsText(file);
     });
-  }, [setSaveElement]);
+  }, [saveElement]);
 
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     noClick: true,
   });
+
 
   return (
     <>
@@ -50,8 +51,9 @@ export default function HomePage() {
       })}
       >
         <input {...getInputProps()} />
-        {<SaveComponent {...saveElement} />}
+        <SaveComponent key={uuidv4()} {...saveElement} />
         <ColorSchemeToggle />
+        
       </AppShell>
     </>
   );

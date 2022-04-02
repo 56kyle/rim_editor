@@ -11,7 +11,14 @@ interface PawnProps extends convert.Element {
     children?: React.ReactNode,
 }
 
-const getPawnID = (pawn: PawnProps): string => findElText(findEl(pawn, 'uniqueID')) as string ?? uuidv4();
+
+const getNameString = (props: PawnProps) => {
+    const nameElement = findEl(props, 'name') as convert.Element;
+    const first = findElText(findEl(nameElement, 'first')) as string;
+    const nick = findElText(findEl(nameElement, 'nick')) as string;
+    const last = findElText(findEl(nameElement, 'last')) as string;
+    return first + nick + last
+}
 
 const PawnComponent: React.FC<PawnProps> = (props) => {
     console.log('PawnComponent');
@@ -21,15 +28,14 @@ const PawnComponent: React.FC<PawnProps> = (props) => {
     return (
         <Grid>
             <Grid.Col span={3}>
-                <NameComponent {...nameElement} />
+                <NameComponent key={uuidv4()} {...nameElement} />
             </Grid.Col>
             <Grid.Col span={6} offset={3}>
                 <Text>Sample Text</Text>
             </Grid.Col>
         </Grid>
-
     );
 };
 
 export default PawnComponent;
-export { getPawnID };
+export { getNameString }
