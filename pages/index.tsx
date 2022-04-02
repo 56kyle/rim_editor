@@ -32,11 +32,6 @@ export default function HomePage() {
     });
   }, [setSaveElement]);
 
-  useEffect(() => {
-    console.log('saveElement - useEffect');
-    console.dir(saveElement);
-  }, [saveElement])
-
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
