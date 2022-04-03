@@ -11,18 +11,16 @@ interface SaveProps extends convert.Element {
 }
 
 const SaveComponent: React.FC<SaveProps> = (props) => {
-  console.log('SaveComponent');
+  //console.log('SaveComponent');
   const [name, setName] = useState(props.name);
 
   const [maps, setMaps] = useState(findEl(props, ['game', 'maps'])?.elements ?? [] as convert.Element[]);
 
   return (
     <>
-      {maps.map((map: convert.Element) => {
-        return (
+      {maps.map((map: convert.Element) => (
           <MapComponent key={uuidv4()} {...map} />
-        );
-      })}
+        ))}
     </>
   );
 };

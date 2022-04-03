@@ -32,12 +32,10 @@ export default function HomePage() {
     });
   }, [saveElement]);
 
-
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     noClick: true,
   });
-
 
   return (
     <>
@@ -53,7 +51,7 @@ export default function HomePage() {
         <input {...getInputProps()} />
         <SaveComponent key={uuidv4()} {...saveElement} />
         <ColorSchemeToggle />
-        
+
       </AppShell>
     </>
   );

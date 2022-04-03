@@ -1,30 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import convert from 'xml-js';
+import { v4 as uuidv4 } from 'uuid';
 
-import { Group, Text } from '@mantine/core';
+import { Group, Text, TextInput } from '@mantine/core';
 
 import { findEl, findElText } from '../Utils/Utils';
 
 interface NameProps extends convert.Element {
+    onChange: (name: convert.Element) => void,
     children?: React.ReactNode,
 }
 
+const NamePortionComponent: React.FC<NameProps> = (props) => {
+    console.log('');
+    const [nameValue, setNameValue] = useState(findElText(props) as string);
+    useEffect(() => {
+        props.onChange({
+            text: nameValue,
+            ...props,
+        });
+    }, [nameValue, props]);
+
+    return (
+        <TextInput
+          value={nameValue}
+          onChange={(e) => {
+              setNameValue(e.target.value);
+          }}
+        />
+    );
+};
+
 const NameComponent: React.FC<NameProps> = (props) => {
-    const [first, setFirst] = useState(findElText(findEl(props, 'first')));
-    const [nick, setNick] = useState(findElText(findEl(props, 'nick')));
-    const [last, setLast] = useState(findElText(findEl(props, 'last')));
+    //console.log('NameComponent');
+    //console.dir(props);
+    const [first, setFirst] = useState<convert.Element>(findEl(props, 'first') as convert.Element);
+    const [nick, setNick] = useState<convert.Element>(findEl(props, 'nick') as convert.Element);
+    const [last, setLast] = useState<convert.Element>(findEl(props, 'last') as convert.Element);
 
     return (
         <Group>
-            <Text>
-                {first}
-            </Text>
-            <Text>
-                {nick}
-            </Text>
-            <Text>
-                {last}
-            </Text>
+            <NamePortionComponent onChange={setFirst} {...first} />
+            <NamePortionComponent onChange={setNick} {...nick} />
+            <NamePortionComponent onChange={setLast} {...last} />
         </Group>
     );
 };
