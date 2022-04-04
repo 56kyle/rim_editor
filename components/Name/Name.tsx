@@ -19,7 +19,7 @@ const NamePortionComponent: React.FC<NameProps> = (props) => {
             text: nameValue,
             ...props,
         });
-    }, [nameValue, props]);
+    }, [nameValue, setNameValue]);
 
     return (
         <TextInput

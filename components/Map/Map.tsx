@@ -30,7 +30,6 @@ const MapComponent: React.FC<MapProps> = (props) => {
         setActiveTab(tabIndex);
     }, [setActiveTab, props]);
 
-
     return (
         <Tabs active={activeTab} onTabChange={handleTabChange} orientation="vertical">
             {pawns.map((pawn) => (
