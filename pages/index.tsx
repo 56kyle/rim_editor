@@ -60,11 +60,7 @@ export default function HomePage() {
       >
         <FullScreenDropzone
           onDrop={onDrop}
-          on={(rejectedFiles: File[]) => {
-            console.error('Files were rejected: ');
-            console.dir(rejectedFiles);
-          }}
-          accept={['text/xml', 'application/xml']}
+          accept={['*']}
         >
           {(status: DropzoneStatus) => {
             console.log('status: ');
