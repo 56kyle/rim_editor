@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 import convert from 'xml-js';
 import { v4 as uuidv4 } from 'uuid';
-import { Box, Grid, Tab, Tabs, Text } from '@mantine/core';
+import { Box, Grid, Tab, Tabs, TabsProps, Text } from '@mantine/core';
 import { useUuid } from '@mantine/hooks';
 import { findEl, findElText } from '../Utils/Utils';
 
@@ -10,6 +10,17 @@ import PawnComponent, { getNameString } from '../Pawn/Pawn';
 interface MapProps extends convert.Element {
     children?: React.ReactNode,
 }
+const fakePawns: convert.Element[] = [
+    {
+        name: 'foo',
+        type: 'element',
+        elements: [
+            {
+                name: 'name',
+            },
+        ],
+    },
+];
 
 const MapComponent: React.FC<MapProps> = (props) => {
     //console.log('MapComponent');
@@ -18,8 +29,8 @@ const MapComponent: React.FC<MapProps> = (props) => {
     const [pawns, setPawns] = useState<convert.Element[]>(
         findEl(props, 'things')?.elements?.filter((element: convert.Element) => findElText(findEl(element, 'kindDef')) === 'Colonist')
     );
-    //console.log('MapComponent - pawns: ');
-    //console.dir(pawns);
+    console.log('MapComponent - pawns: ');
+    console.dir(pawns);
 
     const [activeTab, setActiveTab] = useState<number>();
 

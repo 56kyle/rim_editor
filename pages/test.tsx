@@ -13,6 +13,8 @@ export default function HomePage() {
     </Header>
   );
 
+  console.log('sampleData');
+  console.dir(sampleData);
   return (
     <>
       <AppShell

@@ -1,11 +1,27 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { AppShell, Header } from '@mantine/core';
-import { useDropzone } from 'react-dropzone';
+import { AppShell, Group, Header, Text } from '@mantine/core';
+import { MIME_TYPES, DropzoneStatus, FullScreenDropzone } from '@mantine/dropzone';
 import convert from 'xml-js';
 import { v4 as uuidv4 } from 'uuid';
 import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
 import Nav from '../components/Nav/Nav';
 import SaveComponent from '../components/Save/Save';
+import { sampleData } from '../data/SampleData';
+import { redirect } from 'next/dist/server/api-utils';
+
+interface ContentsProps {
+  children: React.ReactNode;
+}
+
+const ContentsComponent: React.FC<ContentsProps> = (props) => {
+  console.log('ContentsComponent - props: ');
+  console.dir(props);
+  return (
+    <>
+      {props.children}
+    </>
+  );
+};
 
 export default function HomePage() {
   const header = (
@@ -32,15 +48,9 @@ export default function HomePage() {
     });
   }, [saveElement]);
 
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    noClick: true,
-  });
-
   return (
     <>
       <AppShell
-        {...getRootProps()}
         padding="md"
         navbar={<Nav saves={[saveElement]} />}
         header={header}
@@ -48,10 +58,28 @@ export default function HomePage() {
           main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
       })}
       >
-        <input {...getInputProps()} />
+        <FullScreenDropzone
+          onDrop={onDrop}
+          on={(rejectedFiles: File[]) => {
+            console.error('Files were rejected: ');
+            console.dir(rejectedFiles);
+          }}
+          accept={['text/xml', 'application/xml']}
+        >
+          {(status: DropzoneStatus) => {
+            console.log('status: ');
+            console.log(status);
+            return (
+              <Group>
+                <Text>Foo</Text>
+                <Text>Bar</Text>
+                <Text>Baz</Text>
+              </Group>
+            );
+          }}
+        </FullScreenDropzone>
         <SaveComponent key={uuidv4()} {...saveElement} />
         <ColorSchemeToggle />
-
       </AppShell>
     </>
   );
