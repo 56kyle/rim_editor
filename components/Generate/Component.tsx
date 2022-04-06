@@ -6,13 +6,11 @@ import { pascalName, camelName, asComponentName, asPropsName, asStateName, asSta
 
 import { asStates } from './States';
 
-
 const asGroup = (props: convert.Element) => [
     '    <Group>',
     asComponentRefs(props),
     '    </Group>',
   ].join('\n');
-
 
 export const asComponent = (props: convert.Element) => {
   let lines: string[] = [];

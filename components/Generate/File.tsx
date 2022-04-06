@@ -12,11 +12,9 @@ export const asFileString = (props: convert.Element) => {
   const lines: string[] = [
     asImports(props),
     '',
-    '',
     asInterface(props),
     '',
     asComponent(props),
-    '',
     '',
     asExport(props),
     '',

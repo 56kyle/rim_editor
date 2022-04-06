@@ -8,7 +8,7 @@ export const asInterface = (props: convert.Element) => {
     `interface ${asPropsName(props)} extends convert.Element {`,
     '  onChange: (props: convert.Element) => void,',
     '  children?: React.ReactNode,',
-    '};',
+    '}',
   ];
   return lines.join('\n');
 };

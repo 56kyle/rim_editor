@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import convert from 'xml-js';
-import { findEl, findElText } from '../Utils/Utils';
-import { Group, Text } from '@mantine/core'
+import { Group, Text } from '@mantine/core';
 import { v4 as uuidv4 } from 'uuid';
+import { findEl, findElText } from '../Utils/Utils';
 import { FirstComponent } from './First';
 import { NickComponent } from './Nick';
 import { LastComponent } from './Last';
 
 interface NameProps extends convert.Element {
-  onChange: (props: convert.Element) => void;
-  children?: React.ReactNode;
+  onChange: (props: convert.Element) => void,
+  children?: React.ReactNode,
 }
 
 const NameComponent: React.FC<NameProps> = (props: NameProps) => {
@@ -23,7 +23,6 @@ const NameComponent: React.FC<NameProps> = (props: NameProps) => {
       <LastComponent key={uuidv4()} onChange={setLastElement} {...lastElement} />
     </Group>
   );
-}
-
+};
 
 export default NameComponent;

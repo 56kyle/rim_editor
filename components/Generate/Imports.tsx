@@ -8,9 +8,9 @@ export const asImports = (props: convert.Element) => {
   lines = [
     'import React, { useState, useEffect } from \'react\';',
     'import convert from \'xml-js\';',
-    'import { findEl, findElText } from \'../Utils/Utils\';',
     'import { Group, Text } from \'@mantine/core\';',
     'import { v4 as uuidv4 } from \'uuid\';',
+    'import { findEl, findElText } from \'../Utils/Utils\';',
     ...lines,
   ];
   return lines.join('\n');
