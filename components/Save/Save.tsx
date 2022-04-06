@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import convert from 'xml-js';
 import { v4 as uuidv4 } from 'uuid';
 import { Tabs } from '@mantine/core';
@@ -15,6 +15,14 @@ const SaveComponent: React.FC<SaveProps> = (props) => {
   const [name, setName] = useState(props.name);
 
   const [maps, setMaps] = useState(findEl(props, ['game', 'maps'])?.elements ?? [] as convert.Element[]);
+
+  const addMap = useCallback((map: convert.Element) => {
+    setMaps(maps.concat(map));
+  }, [maps, setMaps]);
+
+  const removeMap = useCallback((map: convert.Element) => {
+    setMaps(maps.filter(m => m.id !== map.id));
+  }, [maps, setMaps]);
 
   return (
     <>

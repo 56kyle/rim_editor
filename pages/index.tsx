@@ -3,11 +3,11 @@ import { AppShell, Group, Header, Text } from '@mantine/core';
 import { MIME_TYPES, DropzoneStatus, FullScreenDropzone } from '@mantine/dropzone';
 import convert from 'xml-js';
 import { v4 as uuidv4 } from 'uuid';
+import { redirect } from 'next/dist/server/api-utils';
 import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
 import Nav from '../components/Nav/Nav';
 import SaveComponent from '../components/Save/Save';
 import { sampleData } from '../data/SampleData';
-import { redirect } from 'next/dist/server/api-utils';
 
 interface ContentsProps {
   children: React.ReactNode;

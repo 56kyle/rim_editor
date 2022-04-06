@@ -1,8 +1,7 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import convert from 'xml-js';
 import { v4 as uuidv4 } from 'uuid';
-import { Box, Grid, Tab, Tabs, TabsProps, Text } from '@mantine/core';
-import { useUuid } from '@mantine/hooks';
+import { Tabs } from '@mantine/core';
 import { findEl, findElText } from '../Utils/Utils';
 
 import PawnComponent, { getNameString } from '../Pawn/Pawn';
@@ -10,17 +9,8 @@ import PawnComponent, { getNameString } from '../Pawn/Pawn';
 interface MapProps extends convert.Element {
     children?: React.ReactNode,
 }
-const fakePawns: convert.Element[] = [
-    {
-        name: 'foo',
-        type: 'element',
-        elements: [
-            {
-                name: 'name',
-            },
-        ],
-    },
-];
+
+export const getId = (el: convert.Element): string => findElText(findEl(el, 'uniqueID')) as string;
 
 const MapComponent: React.FC<MapProps> = (props) => {
     //console.log('MapComponent');
