@@ -5,6 +5,6 @@ import { pascalName, camelName, asComponentName, asPropsName, asStateName, asSta
 
 
 export const asComponentRefs = (props: convert.Element) => {
-  const lines = props.elements?.map((el: convert.Element) => `      <${asComponentName(el)} key={uuidv4()} onChange={${asStateSetterName(el)}} {...props} />`) ?? [] as string[];
+  const lines = props.elements?.map((el: convert.Element) => `      <${asComponentName(el)} key={uuidv4()} onChange={${asStateSetterName(el)}} {...${asStateName(el)}} />`) ?? [] as string[];
   return lines.join('\n');
 };

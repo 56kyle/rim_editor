@@ -5,10 +5,10 @@ import { pascalName, camelName, asComponentName, asPropsName, asStateName, asSta
 
 export const asInterface = (props: convert.Element) => {
   const lines: string[] = [
-    `export interface ${asPropsName(props)} extends convert.Element {`,
-    '  onChange: (props: convert.Element) => void;',
-    '  children?: React.ReactNode;',
-    '}',
+    `interface ${asPropsName(props)} extends convert.Element {`,
+    '  onChange: (props: convert.Element) => void,',
+    '  children?: React.ReactNode,',
+    '};',
   ];
   return lines.join('\n');
 };

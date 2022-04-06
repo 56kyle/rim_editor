@@ -24,7 +24,7 @@ export const asComponent = (props: convert.Element) => {
       '  return (',
       asGroup(props),
       '  );',
-      '}',
+      '};',
     ];
   }
   return lines.join('\n');
