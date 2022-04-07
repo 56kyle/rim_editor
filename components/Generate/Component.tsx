@@ -2,6 +2,7 @@ import React, { useState, useCallback, useRef, useEffect } from 'react';
 import convert from 'xml-js';
 import { findEl, findElText } from '../Utils/Utils';
 import { asComponentRefs } from './ComponentRefs';
+import { asEffects } from './Effects';
 import { pascalName, camelName, asComponentName, asPropsName, asStateName, asStateSetterName, asFileContents } from './Name';
 
 import { asStates } from './States';
@@ -19,6 +20,7 @@ export const asComponent = (props: convert.Element) => {
     lines = [
       `const ${asComponentName(props)}: React.FC<${asPropsName(props)}> = (props: ${asPropsName(props)}) => {`,
       asStates(props),
+      asEffects(props),
       '  return (',
       asGroup(props),
       '  );',

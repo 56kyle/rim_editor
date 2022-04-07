@@ -3,14 +3,15 @@ import convert from 'xml-js';
 import { v4 as uuidv4 } from 'uuid';
 import { existsSync } from 'fs';
 
-import { Button, Grid, Text } from '@mantine/core';
+import { Button, Grid, Stack, Text } from '@mantine/core';
 
 import { useUuid } from '@mantine/hooks';
 import { preProcessFile } from 'typescript';
 import { LineDashed } from 'tabler-icons-react';
 import { findEl, findElText } from '../Utils/Utils';
 import NameComponent from '../Name/Name';
-import { saveFile } from '../Generate/File';
+import { asFile, saveFile } from '../Generate/File';
+import { saveAs } from 'file-saver';
 
 interface PawnProps extends convert.Element {
     children?: React.ReactNode,
@@ -38,9 +39,26 @@ const recursePrint = (props: convert.Element, indent: number) => {
 };
 
 const recurseDownload = (props: convert.Element) => {
+    console.log('recurseDownload');
+    console.dir(props);
     if (props.type === 'element') {
+        props.elements?.forEach(recurseDownload);
         saveFile(props);
     }
+};
+
+const getFiles = (props: convert.Element): File[] => {
+    console.log('getFiles');
+    const files: File[] = [];
+    if (props.type === 'element') {
+        files.push(asFile(props));
+        props.elements?.forEach((el: convert.Element) => {
+            getFiles(el).forEach((file) => {
+                files.push(file);
+            });
+        });
+    }
+    return files;
 };
 
 const PawnComponent: React.FC<PawnProps> = (props) => {
@@ -60,7 +78,10 @@ const PawnComponent: React.FC<PawnProps> = (props) => {
             </Grid.Col>
             <Grid.Col key={useUuid()} span={6} offset={3}>
                 <Text>Sample Text</Text>
-                <Button onClick={() => saveFile(findEl(props, 'name') as convert.Element)}>
+                <Stack>
+                    {getFiles(props).map((file) => <Button onClick={() => {saveAs(file)}}>{file.name}</Button>)}
+                </Stack>
+                <Button onClick={() => recurseDownload(props)}>
                     <Text>Save Pawn</Text>
                 </Button>
             </Grid.Col>

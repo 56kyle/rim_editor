@@ -10,7 +10,7 @@ export const asStates = (props: convert.Element) => {
       if (el.type === 'element') {
         return `  const [${asStateName(el)}, ${asStateSetterName(el)}] = useState<convert.Element>(findEl(props, '${camelName(el)}') as convert.Element);`;
       }
-      return '  const [value, setValue] = useState<string>(findElText(props));';
+      return '  const [value, setValue] = useState<string>(findElText(props) as string);';
     });
   }
   return lines.join('\n');

@@ -19,15 +19,15 @@ const MapComponent: React.FC<MapProps> = (props) => {
     const [pawns, setPawns] = useState<convert.Element[]>(
         findEl(props, 'things')?.elements?.filter((element: convert.Element) => findElText(findEl(element, 'kindDef')) === 'Colonist')
     );
-    console.log('MapComponent - pawns: ');
-    console.dir(pawns);
+    //console.log('MapComponent - pawns: ');
+    //console.dir(pawns);
 
     const [activeTab, setActiveTab] = useState<number>();
 
     const handleTabChange = useCallback((tabIndex: number, tabKey?: string | undefined) => {
-        console.log('handleTabChange - ');
-        console.log('\tprops:');
-        console.dir(props);
+        //console.log('handleTabChange - ');
+        //console.log('\tprops:');
+        //console.dir(props);
         setActiveTab(tabIndex);
     }, [setActiveTab, props]);
 
