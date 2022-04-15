@@ -14,3 +14,7 @@ export const asPropsName = (props: convert.Element) => `${pascalName(props)}Prop
 export const asStateName = (props: convert.Element) => `${camelName(props)}Element`;
 
 export const asStateSetterName = (props: convert.Element) => `set${pascalName(props)}Element`;
+
+export const asStateListName = (props: convert.Element) => `${camelName(props)}Elements`;
+
+export const asStateListSetterName = (props: convert.Element) => `set${pascalName(props)}Elements`
