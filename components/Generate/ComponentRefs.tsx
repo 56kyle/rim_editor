@@ -3,9 +3,15 @@ import convert from 'xml-js';
 import { findEl, findElText } from '../Utils/Utils';
 import { pascalName, camelName, asComponentName, asPropsName, asStateName, asStateSetterName, asFileContents } from './Name';
 
+
 export const asComponentRefs = (props: convert.Element) => {
   const lines: string[] = [];
   props.elements?.forEach((el: convert.Element) => {
+    if (el.name === 'li') {
+      lines.push('      {' + asStateName(el) + 's.map((' + asStateName(el) + ') => {');
+      lines.push('        return <' + asComponentName(el) + ' ' + asPropsName(el) + '={' + asStateName(el) + '} />;');
+      lines.push('      })}');
+    }
     if (el.type === 'element') {
       lines.push(`      <${asComponentName(el)} key={uuidv4()} onChange={${asStateSetterName(el)}} {...${asStateName(el)}} />`);
     } else {

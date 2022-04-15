@@ -9,11 +9,11 @@ export const asImports = (props: convert.Element) => {
     'import convert from \'xml-js\';',
     'import { Group, Text, TextInput } from \'@mantine/core\';',
     'import { v4 as uuidv4 } from \'uuid\';',
-    'import { findEl, findElText } from \'../Utils/Utils\';',
+    'import { findEl, findElText } from \'../../Utils/Utils\';',
   ];
   props.elements?.forEach((el: convert.Element) => {
     if (el.type === 'element') {
-      lines.push(`import ${asComponentName(el)} from '../${pascalName(el)}/${pascalName(el)}';`);
+      lines.push(`import ${asComponentName(el)} from './${pascalName(el)}/${pascalName(el)}';`);
     }
   });
   return lines.join('\n');

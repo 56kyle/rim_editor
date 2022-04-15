@@ -1,18 +1,21 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import convert from 'xml-js';
 import { v4 as uuidv4 } from 'uuid';
-import { existsSync } from 'fs';
 
 import { Button, Grid, Stack, Text } from '@mantine/core';
 
 import { useUuid } from '@mantine/hooks';
 import { preProcessFile } from 'typescript';
 import { LineDashed } from 'tabler-icons-react';
+import JSZip from 'jszip';
 import { findEl, findElText } from '../Utils/Utils';
 import NameComponent from '../Name/Name';
-import { asFile, saveFile } from '../Generate/File';
-import { saveAs } from 'file-saver';
+import { asFile, asFileString, saveFile } from '../Generate/File';
+import { pascalName } from '../Generate/Name';
+import saveAs from 'file-saver';
+import ThingComponent from './Thing';
 
+const zip = new JSZip();
 interface PawnProps extends convert.Element {
     children?: React.ReactNode,
 }
@@ -41,10 +44,24 @@ const recursePrint = (props: convert.Element, indent: number) => {
 const recurseDownload = (props: convert.Element) => {
     console.log('recurseDownload');
     console.dir(props);
+    const folderName = pascalName(props);
+    const fileName = `${folderName}.tsx`;
     if (props.type === 'element') {
-        props.elements?.forEach(recurseDownload);
-        saveFile(props);
+        const current_folder = zip.folder(folderName) as JSZip;
+        current_folder.file(fileName, asFileString(props));
+        if (props.elements && props.elements[0]?.type !== 'text') {
+            props.elements?.forEach((el: convert.Element) => {
+                recurseDownload(el);
+            });
+        }
     }
+};
+
+const downloadZip = (props: convert.Element) => {
+    recurseDownload(props);
+    zip.generateAsync({ type: 'blob' }).then((blob) => {
+        saveAs(blob, 'gen_components.zip');
+    });
 };
 
 const getFiles = (props: convert.Element): File[] => {
@@ -65,23 +82,17 @@ const PawnComponent: React.FC<PawnProps> = (props) => {
     //console.log('PawnComponent');
     //console.dir(props);
     const [nameElement, setNameElement] = useState<convert.Element>(findEl(props, 'name') as convert.Element);
-    const [ageTrackerElement, setAgeTrackerElement] = useState<convert.Element>(findEl(props, 'ageTracker') as convert.Element);
-    const [healthTrackerElement, setHealthTrackerElement] = useState<convert.Element>(findEl(props, 'healthTracker') as convert.Element);
-    const [factionElement, setFactionElement] = useState<convert.Element>(findEl(props, 'faction') as convert.Element);
-    const [skillsElement, setSkillsElement] = useState<convert.Element>(findEl(props, 'skills') as convert.Element);
-    const [storyElement, setStoryElement] = useState<convert.Element>(findEl(props, 'story') as convert.Element);
-
+    recursePrint(props, 0);
+                //<Stack>
+                    //{getFiles(props).map((file) => <Button onClick={() => {saveAs(file)}}>{file.name}</Button>)}
+                //</Stack>
     return (
         <Grid key={useUuid()}>
             <Grid.Col key={useUuid()} span={3}>
                 <NameComponent onChange={setNameElement} {...nameElement as convert.Element} />
             </Grid.Col>
             <Grid.Col key={useUuid()} span={6} offset={3}>
-                <Text>Sample Text</Text>
-                <Stack>
-                    {getFiles(props).map((file) => <Button onClick={() => {saveAs(file)}}>{file.name}</Button>)}
-                </Stack>
-                <Button onClick={() => recurseDownload(props)}>
+                <Button onClick={() => downloadZip(props)}>
                     <Text>Save Pawn</Text>
                 </Button>
             </Grid.Col>
